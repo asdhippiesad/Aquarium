@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AquariumProgram
 {
@@ -19,7 +18,7 @@ namespace AquariumProgram
                 const string RemoveFishCommand = "2";
                 const string ExitCommand = "3";
 
-                aquarium.ShorFish();
+                aquarium.ShowFish();
 
                 Console.WriteLine($"{AddFishCommand} -- Add fish.\n" +
                                   $"{RemoveFishCommand} -- Remove fish.\n" +
@@ -54,10 +53,10 @@ namespace AquariumProgram
 
     class Fish
     {
-        public Fish(int age, int maxAge)
-        { 
-            Age = age;
-            MaxAge = maxAge;
+        public Fish()
+        {
+            Age = 0;
+            MaxAge = 5;
         }
 
         public int Age { get; private set; }
@@ -77,7 +76,8 @@ namespace AquariumProgram
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{MaxAge}, {Age}");
+            Console.WriteLine($"Максимальное количество возраста - {MaxAge}.\n" +
+                              $"Возраст - {Age}");
             UpdateAge();
         }
 
@@ -110,7 +110,7 @@ namespace AquariumProgram
         {
             if (FishCount < maxFishCount)
             {
-                Fish newFish = new Fish(0, 0);
+                Fish newFish = new Fish();
 
                 _fish.Add(newFish);
 
@@ -122,7 +122,7 @@ namespace AquariumProgram
             }
         }
 
-        public void ShorFish()
+        public void ShowFish()
         {
             Console.WriteLine($"Количество рыб в аквариуме: {FishCount}.");
 
@@ -130,7 +130,7 @@ namespace AquariumProgram
             {
                 Fish fish = _fish[i];
                 fish.ShowInfo();
-                fish.Live(FishCount);
+                fish.Live(0);
             }
         }
 
