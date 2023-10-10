@@ -1,5 +1,7 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AquariumProgram
 {
@@ -8,7 +10,6 @@ namespace AquariumProgram
         static void Main(string[] args)
         {
             bool isSwim = true;
-            int maxFishCount = 10;
 
             Aquarium aquarium = new Aquarium();
 
@@ -18,7 +19,7 @@ namespace AquariumProgram
                 const string RemoveFishCommand = "2";
                 const string ExitCommand = "3";
 
-                aquarium.ShowFish();
+                aquarium.ShorFish();
 
                 Console.WriteLine($"{AddFishCommand} -- Add fish.\n" +
                                   $"{RemoveFishCommand} -- Remove fish.\n" +
@@ -29,7 +30,7 @@ namespace AquariumProgram
                 switch (userInput)
                 {
                     case AddFishCommand:
-                        aquarium.CreateFish(maxFishCount);
+                        aquarium.CreateFish();
                         break;
 
                     case RemoveFishCommand:
@@ -53,48 +54,34 @@ namespace AquariumProgram
 
     class Fish
     {
-        public Fish()
+        private int _maxAge = 5;
+
+        public Fish(int age)
         {
-            Age = 0;
-            MaxAge = 5;
+            Age = age;
         }
 
         public int Age { get; private set; }
-        public int MaxAge { get; private set; }
-
-        public bool IsAlive;
-
-        public void Live(int agingRate)
-        {
-            Age += agingRate;
-
-            if (Age >= MaxAge)
-            {
-                IsAlive = false;
-            }
-        }
+        public bool IsAlive => Age < _maxAge;
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Максимальное количество возраста - {MaxAge}.\n" +
-                              $"Возраст - {Age}");
-            UpdateAge();
+            Console.WriteLine($"{_maxAge}/{Age}");
         }
-
-        public bool IsDie()
+        public void Die()
         {
-            return IsAlive = false;
+            Age = _maxAge;
         }
 
         public void UpdateAge()
         {
-            if (Age < MaxAge)
+            if (IsAlive)
             {
                 Age++;
             }
-            else
+            else if (Age >= _maxAge)
             {
-                IsDie();
+                Die();
                 Console.WriteLine($"Рыбки больше с нами нет.(");
             }
         }
@@ -102,17 +89,17 @@ namespace AquariumProgram
 
     class Aquarium
     {
-        private List<Fish> _fish = new List<Fish>();
+        private List<Fish> _fishes = new List<Fish>();
 
-        public int FishCount { get { return _fish.Count; } }
+        public int FishCount => _fishes.Count;
 
-        public void CreateFish(int maxFishCount)
+        public void CreateFish()
         {
-            if (FishCount < maxFishCount)
-            {
-                Fish newFish = new Fish();
+            int maxFishCount = 5;
 
-                _fish.Add(newFish);
+            if (FishCount < 5)
+            {
+                _fishes.Add(new Fish(0));
 
                 Console.WriteLine($"Добвлена новая рыба: {FishCount}.");
             }
@@ -122,15 +109,15 @@ namespace AquariumProgram
             }
         }
 
-        public void ShowFish()
+        public void ShorFish()
         {
             Console.WriteLine($"Количество рыб в аквариуме: {FishCount}.");
 
-            for (int i = 0; i < FishCount; i++)
+            for (int i = 0; i < _fishes.Count; i++)
             {
-                Fish fish = _fish[i];
-                fish.ShowInfo();
-                fish.Live(0);
+                Console.WriteLine($"Рыба: {i}");
+                _fishes[i].ShowInfo();
+                _fishes[i].UpdateAge();
             }
         }
 
@@ -140,11 +127,14 @@ namespace AquariumProgram
 
             if (FishCount > 0)
             {
-                if (int.TryParse(Console.ReadLine(), out int fishIndex) && fishIndex >= 1 && fishIndex < _fish.Count)
+                if (int.TryParse(Console.ReadLine(), out int fishIndex) && fishIndex >= 0 && fishIndex < _fishes.Count)
                 {
-
-                    _fish.RemoveAt(fishIndex);
+                    _fishes.RemoveAt(fishIndex);
                     Console.WriteLine($"Удаленная рыба: {fishIndex}.");
+                }
+                else
+                {
+                    Console.WriteLine("Рыбки с таким номером нет.");
                 }
             }
             else
