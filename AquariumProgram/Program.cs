@@ -56,9 +56,9 @@ namespace AquariumProgram
     {
         private int _maxAge = 5;
 
-        public Fish(int age)
+        public Fish()
         {
-            Age = age;
+            Age = 0;
         }
 
         public int Age { get; private set; }
@@ -79,7 +79,7 @@ namespace AquariumProgram
             {
                 Age++;
             }
-            else if (Age >= _maxAge)
+            else
             {
                 Die();
                 Console.WriteLine($"Рыбки больше с нами нет.(");
@@ -97,9 +97,9 @@ namespace AquariumProgram
         {
             int maxFishCount = 5;
 
-            if (FishCount < 5)
+            if (FishCount < maxFishCount)
             {
-                _fishes.Add(new Fish(0));
+                _fishes.Add(new Fish());
 
                 Console.WriteLine($"Добвлена новая рыба: {FishCount}.");
             }
