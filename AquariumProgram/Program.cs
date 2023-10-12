@@ -46,7 +46,7 @@ namespace AquariumProgram
                         break;
                 }
 
-                aquarium.ShowUpdateAge();
+                aquarium.UpdateFishesAge();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -110,7 +110,7 @@ namespace AquariumProgram
             }
         }
 
-        public void ShowUpdateAge()
+        public void UpdateFishesAge()
         {
             foreach (Fish fishes in _fishes)
             {
