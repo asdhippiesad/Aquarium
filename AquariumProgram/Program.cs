@@ -19,7 +19,7 @@ namespace AquariumProgram
                 const string RemoveFishCommand = "2";
                 const string ExitCommand = "3";
 
-                aquarium.ShorFish();
+                aquarium.ShowFishes();
 
                 Console.WriteLine($"{AddFishCommand} -- Add fish.\n" +
                                   $"{RemoveFishCommand} -- Remove fish.\n" +
@@ -46,6 +46,7 @@ namespace AquariumProgram
                         break;
                 }
 
+                aquarium.ShowUpdateAge();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -91,33 +92,40 @@ namespace AquariumProgram
     {
         private List<Fish> _fishes = new List<Fish>();
 
+        public int MaxFishCount { get; } = 5;
         public int FishCount => _fishes.Count;
 
         public void CreateFish()
         {
-            int maxFishCount = 5;
 
-            if (FishCount < maxFishCount)
-            {
+            if (FishCount < MaxFishCount) 
+            { 
                 _fishes.Add(new Fish());
 
                 Console.WriteLine($"Добвлена новая рыба: {FishCount}.");
             }
             else
             {
-                Console.WriteLine($"Ошибка, количество рыб не должно привышать {maxFishCount} штук.");
+                Console.WriteLine($"Ошибка, количество рыб не должно привышать {MaxFishCount} штук.");
             }
         }
 
-        public void ShorFish()
+        public void ShowUpdateAge()
+        {
+            foreach (Fish fishes in _fishes)
+            {
+                fishes.UpdateAge();
+            }
+        }
+
+        public void ShowFishes()
         {
             Console.WriteLine($"Количество рыб в аквариуме: {FishCount}.");
 
             for (int i = 0; i < _fishes.Count; i++)
             {
-                Console.WriteLine($"Рыба: {i}");
+                Console.WriteLine($"Рыбы: {i + 1}");
                 _fishes[i].ShowInfo();
-                _fishes[i].UpdateAge();
             }
         }
 
